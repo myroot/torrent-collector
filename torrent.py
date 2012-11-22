@@ -109,7 +109,7 @@ def trg(bbs):
     #print html
     soup = BeautifulSoup.BeautifulSoup(html)
     articles = soup.findAll('td', attrs={'class':"mw_basic_list_subject"})
-        for item in articles :
+    for item in articles :
         article = item.findAll('a')
         if len(article) > 1 and bbs == 'torrent_movie':
             article = article[1]
