@@ -62,7 +62,10 @@ def tak(bbs):
                     if bbs == 'movie':
                         keywords.append('movie')
                     for keyword in keywords:
-                        db_insert_keyword(keyword,r)
+                        try:
+                            db_insert_keyword(keyword,r)
+                        except:
+                            pass
         
 def tak_get_file_metadata(url):
     base = 'http://www.dakchigo.com/bbs/'
@@ -199,7 +202,8 @@ def get_keyword(title):
 
 def check_dup(cid, link):
     cur = db.cursor()
-    r = cur.execute('select * from torrent where community like %s and link like %s', (cid,link))
+    r = cur.execute('select no from torrent where community = %s and link = %s limit 1', (cid,link))
+    cur.close()
     return r > 0
 
 def db_insert_torrent(comm , link , title, filename, data , filetype ) :
@@ -227,7 +231,10 @@ def db_get_keyword_id(keyword):
 def db_insert_keyword(keyword, torrentId) :
     keyId = db_get_keyword_id(keyword)
     cur = db.cursor()
-    r = cur.execute("insert into torrent_keyword_map (keyword,torrent_id) values ( %s,%s )", (keyId, torrentId))
+    try:
+        r = cur.execute("insert into torrent_keyword_map (keyword,torrent_id) values ( %s,%s )", (keyId, torrentId))
+    except:
+        pass
     cur.close()
 
 
