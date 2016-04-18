@@ -47,7 +47,7 @@ def tak(bbs):
         article = item.find('a')
         link = article['href']
         text = article.contents[0]
-        #print text
+        print text
         if check_dup(communityID, link) :
             continue
         print link
@@ -105,7 +105,7 @@ def tak_get_file_metadata(url):
     
 
 def trg(bbs):
-    url = 'http://www2.torrentrg.com/bbs/board.php?bo_table='+bbs
+    url = 'http://www.torrentrg.com/bbs/board.php?bo_table='+bbs
     communityID = 'rg_'+bbs
     
     html = http_get(url).read().decode('cp949').encode('utf-8')
@@ -126,7 +126,7 @@ def trg(bbs):
         if check_dup(communityID, link) :
             continue
         print link  
-        #print title
+        print title
         title = title+''
         title = title.encode('cp949').decode('cp949').encode('utf-8')
         keywords = get_keyword(title)
@@ -135,6 +135,7 @@ def trg(bbs):
         #print keywords
 
         files = trg_get_file_metadata(link)
+        print files
         resultRows = []
         for i in files:
             if i['type'] != 'unknown' :
@@ -153,10 +154,10 @@ def trg_get_file_metadata(url):
     fullUrl = base+url
     html = http_get(fullUrl).read().decode('cp949').encode('utf-8')
     #<td class=mw_basic_view_subject>
-    try:
-        soup = BeautifulSoup.BeautifulSoup(html)
-    except:
-        return []
+    #try:
+    soup = BeautifulSoup.BeautifulSoup(html)
+    #except:
+    #    return []
     #titleTag = soup.find('td',attrs={'class':'mw_basic_view_subject'})
     #title = titleTag.contents[0].strip()
     #title = title.split('         ')[1]
@@ -240,13 +241,36 @@ def db_insert_keyword(keyword, torrentId) :
 
 if __name__ == '__main__':
     connectDB()
-    tak('movie')
-    tak('kortv')
-    tak('fortv')
-    tak('ani')
+    #try:
+    #    tak('movie')
+    #except:
+    #    print 'error'
+    #try:
+    #    tak('kortv')
+    #except:
+    #    print 'error'
+    #try:
+    #    tak('fortv')
+    #except:
+    #    print 'error'
+    #try:
+    #    tak('ani')
+    #except:
+    #    print 'error'
+    #try:
     trg('torrent_variety')
-    trg('torrent_movie')
-    trg('torrent_tv')
+    '''
+    except:
+        print 'error'
+    try:
+        trg('torrent_movie')
+    except:
+        print 'error'
+    try:
+        trg('torrent_tv')
+    except:
+        print 'error'
+    '''
     category.update()
     print 'done'
     #print http_get('http://www.dakchigo.com/bbs/board.php?bo_table=movie&wr_id=11090').read().decode('cp949').encode('utf-8')
